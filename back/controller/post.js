@@ -6,8 +6,10 @@ const contractInstance = require("../helpers/getContractInstance");
 
 exports.createPost = async (req, res) => {
   try {
+    
     var data = {
       //userId: req.user._id,
+      postMarksheet: req.file.filename,
       postName: req.body.postName,
       postMarks: req.body.postMarks,
       postAdmin: req.body.postAdmin,

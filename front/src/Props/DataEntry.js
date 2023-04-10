@@ -40,9 +40,12 @@ function DataEntry() {
 
   const [postName, setPostName] = useState("");
   const [postAdmin, setPostAdmin] = useState(user.name);
-  const [postMarks,setPostMarks] = useState("");
+  const [postTotalMarks,setPostTotalMarks] = useState("");
+  const [postObtainedMarks,setPostObtainedMarks] = useState("");
   const [fromAddress,setfromAddress] = useState("0xc67e5FFF9316476236B104993d91309170bb7BAC");
+  const postMarks= (postObtainedMarks / postTotalMarks) * 100;
   const [msg, setMsg] = useState("");
+  const postImageRef = useRef();
   const createPost = function () {
     var data = new FormData();
     data.append("postName", postName);
@@ -50,13 +53,10 @@ function DataEntry() {
     data.append("postAdmin",postAdmin);
     data.append("userAddress",defaultAccount);
     data.append("fromAddress",fromAddress);
-    
+    data.append("postMarksheet", postImageRef.current.files[0]);
     console.log(data);
     console.log(JSON.stringify(data));
-    // let formDataObject = Object.fromEntries(data.entries());
-  // let formDataJsonString = JSON.stringify(formDataObject);
-  // console.log(formDataJsonString);
-    fetch("/post", {
+  fetch("/post", {
       method: "POST",
       body: data,
     })
@@ -112,17 +112,30 @@ function DataEntry() {
 			/></div>
 			
           
-          <div className="mb-3">
+      <div className="mb-3">
 			<label  className="form-label">
-            Student Marks
+            Total Marks
 			</label>
 			<input
 			  type="text"
-			  id="marks"
-			  name="marks"
+			  id="total_marks"
+			  name="total_marks"
 			  className="form-control"
-			  value={postMarks}
-			  onChange={(e) => setPostMarks(e.target.value)}
+			  value={postTotalMarks}
+			  onChange={(e) => setPostTotalMarks(e.target.value)}
+			/>
+		  </div>
+      <div className="mb-3">
+			<label  className="form-label">
+            Obtained Marks
+			</label>
+			<input
+			  type="text"
+			  id="obtained_marks"
+			  name="obtained_marks"
+			  className="form-control"
+			  value={postObtainedMarks}
+			  onChange={(e) => setPostObtainedMarks(e.target.value)}
 			/>
 		  </div>
           <div className="mb-3">
@@ -151,7 +164,10 @@ function DataEntry() {
 			  onChange={(e) => setfromAddress("0xc67e5FFF9316476236B104993d91309170bb7BAC")}
 			/>
 		  </div>
-      
+      <div className="row px-5 mb-5">
+        <label className="p-0 text-muted form-label">Upload Marksheet</label>
+        <input type="file" ref={postImageRef} className="form-control" />
+      </div>
         
         </div>
         </div>
